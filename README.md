@@ -1,4 +1,4 @@
-# Video-Game-Capstone
+# Developer Buddy - Video Game Capstone
 
 A repository for the analysis of the video game industry. This is based off of data collected from [RAWG](https://rawg.io/). An application that predicts how well a video game would rate among people who play video games based on the criteria chosen.
 
