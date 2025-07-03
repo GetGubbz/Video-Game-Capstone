@@ -8,7 +8,7 @@ A repository for the analysis of the video game industry. This is based off of d
 
 **Exploration/Cleaning:** Jupyter, Python
 
-**Front-End:** Streamlit
+**Front-End:** VSCode, Streamlit
 
 Python is used to tackle pulling from the API, cleaning, and setting up the streamlit app. Notebooks were used to assess data for relevancy and transform some data. An XGBoost classifier is applied to the inputs to predict the rating.
 
