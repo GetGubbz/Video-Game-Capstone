@@ -8,11 +8,12 @@ import xgboost as xgb
 import pickle
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+import os
 
-explainer = joblib.load('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/models/explainer_v1.joblib')
-explanation = joblib.load('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/models/explanation_v1.joblib')
-model = joblib.load('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/models/xgboostclassifier_v1.joblib')
-starting_predict_df = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/zero_df.csv')
+explainer = joblib.load('../models/explainer_v1.joblib')
+explanation = joblib.load('../models/explanation_v1.joblib')
+model = joblib.load('../models/xgboostclassifier_v1.joblib')
+starting_predict_df = pd.read_csv('../data/zero_df.csv')
 
 st.set_page_config(layout="wide")
 st.title('Developer Buddy')
@@ -23,11 +24,11 @@ tab1, tab2 = st.tabs(["Background", "App"])
 with tab2:
 
     # inputing data -----------------------------------------------------------------------------------------------------------------------------
-    cleaned_data = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/rawg_cleaned_games_no_dev_data.csv')
-    genre_df = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/genre_list.csv')
-    tags_df = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/tag_list.csv')
-    stores_df = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/stores_list.csv')
-    platform_df = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/platforms_list.csv')
+    cleaned_data = pd.read_csv('../data/rawg_cleaned_games_no_dev_data.csv')
+    genre_df = pd.read_csv('../data/genre_list.csv')
+    tags_df = pd.read_csv('../data/tag_list.csv')
+    stores_df = pd.read_csv('../data/stores_list.csv')
+    platform_df = pd.read_csv('../data/platforms_list.csv')
     esrb_rating = ['Mature', 'Everyone 10+', 'Teen', 'Adults Only', 'Everyone', 'Rating Pending']
 
     # setting up streamlit objects --------------------------------------------------------------------------------------------------------------
@@ -237,7 +238,7 @@ with tab2:
         class_index = target_list.index(target)
         i = 0
 
-        explanation = explainer(model[:-2].transform(X).toarray())
+        explanation = explainer(model[:-2].transform(X))
 
         fig, ax = plt.subplots()
         shap.plots.waterfall(explanation[i, :, class_index], show=False)
