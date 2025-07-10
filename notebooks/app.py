@@ -8,12 +8,11 @@ import xgboost as xgb
 import pickle
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-import os
 
-explainer = joblib.load('../models/explainer_v1.joblib')
-explanation = joblib.load('../models/explanation_v1.joblib')
-model = joblib.load('../models/xgboostclassifier_v1.joblib')
-starting_predict_df = pd.read_csv('../data/zero_df.csv')
+explainer = joblib.load('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/models/explainer_v1.joblib')
+explanation = joblib.load('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/models/explanation_v1.joblib')
+model = joblib.load('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/models/xgboostclassifier_v1.joblib')
+starting_predict_df = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/zero_df.csv')
 
 st.set_page_config(layout="wide")
 st.title('Developer Buddy')
@@ -24,11 +23,11 @@ tab1, tab2 = st.tabs(["Background", "App"])
 with tab2:
 
     # inputing data -----------------------------------------------------------------------------------------------------------------------------
-    cleaned_data = pd.read_csv('../data/rawg_cleaned_games_no_dev_data.csv')
-    genre_df = pd.read_csv('../data/genre_list.csv')
-    tags_df = pd.read_csv('../data/tag_list.csv')
-    stores_df = pd.read_csv('../data/stores_list.csv')
-    platform_df = pd.read_csv('../data/platforms_list.csv')
+    cleaned_data = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/rawg_cleaned_games_no_dev_data.csv')
+    genre_df = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/genre_list.csv')
+    tags_df = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/tag_list.csv')
+    stores_df = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/stores_list.csv')
+    platform_df = pd.read_csv('C:/Users/Gubbz/Documents/NSS/Capstone/Video-Game-Capstone/data/platforms_list.csv')
     esrb_rating = ['Mature', 'Everyone 10+', 'Teen', 'Adults Only', 'Everyone', 'Rating Pending']
 
     # setting up streamlit objects --------------------------------------------------------------------------------------------------------------
@@ -112,10 +111,6 @@ with tab2:
 
     X = starting_predict_df.drop(columns=['Unnamed: 0'])
 
-    # with col[0]:
-    #     st.header('Explanation: What You Selected')
-    #     st.write(f'{selected_genres}')
-
 
     with col[0]:
         st.header('Model Output')
@@ -140,7 +135,6 @@ with tab2:
 
         if (X == 0).all(axis=1).all():
             st.write('Select More Attributes!')
-            #st.metric(label="Predicted Rating", value=0)
         else:   
             y_pred = model.predict(X)
             if y_pred == 1:
@@ -258,12 +252,14 @@ with tab1:
     st.write('When developing a video game, a developer must use certain aspects in order to build that game. In todays market, some options may result in a higher rating with gamers than others. This app predicts whether those options chosen will do well within todays market.')
 
     st.header('Data Processing Explanation')
-    st.write('Some explanation is warranted for how this data is gathered, cleaned and modeled.' \
-    'The data is acquired from RAWG.io via API calls. I called 2500 pages of the games portion of the code to retrieve all of the data I needed. The API call is pretty straightforward without needing time breaks and the like.' \
-    'The data itself had multiple layers of json code for each of the desired columns. I set up a general functiont that needed tweaking between each of the data columns. For example, using he fucntion would look for one name of the column when the actual name might be slightly different than a different data column.' \
-    'The function I used converted the json to columns of data with either a zero or one, showing categorically if the column name exists for that particular game. The only exception to that rule was the ESRB rating column, which I left as strings for the OneHotEncoder to work out.' \
-    'This took the most amount of time as gathering all of that data into a useful dataframe to be modeled was a challenge.' \
-    'I then pass the data through a pipeline containing OneHotEncoder and a Simple Imputer using the most_frequent strategy. I then used XGBoostClassifier as my model to predict outcomes' \
-    'This resulted in data heavily skewed towards the bad ratings, so I then applied SMOTE before the XGBoost model to beef up the higher rankings.' \
+    st.write('Some explanation is warranted for how this data is gathered, cleaned and modeled. ' \
+    'The data is acquired from RAWG.io via API calls. I called 2500 pages of the games portion of the code to retrieve all of the data I needed. The API call is pretty straightforward without needing time breaks and the like. ' \
+    'The data itself had multiple layers of json code for each of the desired columns. I set up a general functiont that needed tweaking between each of the data columns. For example, using he fucntion would look for one name of the column when the actual name might be slightly different than a different data column. ' \
+    'The function I used converted the json to columns of data with either a zero or one, showing categorically if the column name exists for that particular game. The only exception to that rule was the ESRB rating column, which I left as strings for the OneHotEncoder to work out. ' \
+    'This took the most amount of time as gathering all of that data into a useful dataframe to be modeled was a challenge. ' \
+    'I then pass the data through a pipeline containing OneHotEncoder and a Simple Imputer using the most_frequent strategy. I then used XGBoostClassifier as my model to predict outcomes. ' \
+    'This resulted in data heavily skewed towards the bad ratings, so I then applied SMOTE before the XGBoost model to beef up the higher rankings. ' \
     'I then created the app to apply the model within.')
+    st.write('All credit goes to RAWG.io for the allowance of free data access to what you see within the app.')
+    st.write('GitHub: https://github.com/GetGubbz | LinkedIn: www.linkedin.com/in/zach-hubbell-a44489363')
     
